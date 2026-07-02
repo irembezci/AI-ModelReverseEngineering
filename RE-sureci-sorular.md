@@ -1,4 +1,4 @@
-# Yapay Zeka Reverse Engineering (Tersine Mühendislik) Sürecinde Sorduğumuz Temel Sorular
+# AI Reverse Engineering (Tersine Mühendislik) Sürecinde Sorduğumuz Temel Sorular
 
 Bir yapay zeka sistemini reverse engineering yaklaşımıyla incelerken amacımız yalnızca modelin ne olduğunu belirlemek değildir. Aynı zamanda modelin nasıl çalıştığını, hangi verilerle eğitildiğini, hangi karar mekanizmalarını kullandığını ve hangi sınırlamalara sahip olduğunu da anlamaya çalışırız. Bu amaç doğrultusunda araştırmacılar sistematik olarak belirli sorular sorar. Bu sorular, gerçekleştirilecek analizlerin temelini oluşturur.
 
