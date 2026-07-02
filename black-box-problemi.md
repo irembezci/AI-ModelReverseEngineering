@@ -179,3 +179,23 @@ FMTI, bir foundation model geliştiricisinin ne kadar şeffaf olduğunu değerle
 FMTI sonuçları da foundation model geliştiricileri arasında önemli şeffaflık farklılıkları bulunduğunu göstermektedir. Bazı kuruluşlar veri toplama süreçleri, model özellikleri ve dağıtım sonrası uygulamalar hakkında daha kapsamlı bilgiler paylaşırken, bazı kuruluşlar bu alanlarda oldukça sınırlı görünürlük sağlamaktadır. Bu durum, yapay zeka sistemlerinin şeffaflığının tek boyutlu bir özellik olmadığını ve farklı alanlarda farklı düzeylerde değerlendirilmesi gerektiğini göstermektedir.
 
 Başka bir ifadeyle, bir modelin black box olması o sistem hakkında hiçbir şey bilinmediği anlamına gelmemektedir. Benzer şekilde açık ağırlıklı bir model de geliştirme süreci, eğitim verileri veya güvenlik değerlendirmeleri hakkında yeterli bilgi paylaşmıyorsa belirli açılardan opak kalmaya devam edebilir. Bu nedenle güncel literatürde şeffaflık, tek bir özellik olarak değil farklı boyutlardan oluşan ve ölçülebilen bir spektrum olarak ele alınmaktadır.
+
+# Black Box, Gray Box, White Box ve Outside-the-Box Erişim Modelleri
+
+Bu noktaya kadar black box, gray box ve white box sistemleri ele aldık. Ancak güncel çalışmalar, yapay zeka sistemlerinin değerlendirilmesinde erişim seviyelerinin yalnızca bu üç kategoriyle sınırlı olmadığını göstermektedir. 2024 yılında yayınlanan *Black-Box Access is Insufficient for Rigorous AI Audits* çalışmasında araştırmacılar black box, gray box ve white box erişim modellerine ek olarak **outside-the-box access** kavramını da tanımlamıştır.
+
+![Black Box, Gray Box, White Box ve Outside-the-Box erişim modelleri](images/access-models.png)
+
+*Şekil: Yapay zeka sistemlerinde black box, gray box, white box ve outside-the-box erişim modellerinin kavramsal gösterimi. Outside-the-box erişim, modele doğrudan erişim yerine teknik raporlar, dokümantasyon, model kartları, eğitim verileri ve benzeri dış bilgi kaynaklarına erişimi ifade etmektedir. Kaynak:* Black-Box Access is Insufficient for Rigorous AI Audits *(2024).*
+
+Bu çalışmada araştırmacılar, yapay zeka sistemlerine yönelik erişim modellerini yalnızca black box, gray box ve white box kategorileri ile sınırlı tutmamaktadır. Bunun yerine, modelin kendisine yönelik erişimin yanı sıra sistem hakkında erişilebilen ek bilgi kaynaklarını da değerlendirme sürecine dahil etmekte ve bu yaklaşımı **outside-the-box access** olarak tanımlamaktadır.
+
+Black box, gray box ve white box erişimleri modelin kendisine yönelik erişim seviyelerini ifade ederken, outside-the-box access teknik raporlar, model kartları, dokümantasyon, eğitim verilerine ilişkin bilgiler ve iç değerlendirme sonuçları gibi model dışında bulunan bilgi kaynaklarına erişimi kapsamaktadır. Araştırmacıların özellikle vurguladığı noktalardan biri, outside-the-box erişimin diğer erişim modellerinin alternatifi olmadığıdır. Bir sistem aynı anda hem black box erişime hem de outside-the-box erişime sahip olabilir. Örneğin GPT-4 teknik olarak black box bir sistem olarak değerlendirilse de yayınlanan teknik raporlar, sistem kartları ve güvenlik değerlendirmeleri sayesinde model hakkında ek bilgiler elde edilebilmektedir.
+
+Araştırmacılar ayrıca farklı erişim seviyelerinin hangi değerlendirme ve analiz tekniklerini mümkün kıldığını da incelemiştir.
+
+![Erişim seviyelerine göre uygulanabilecek değerlendirme ve analiz yöntemleri](images/access-techniques-table.png)
+
+*Şekil: Farklı erişim seviyelerinde uygulanabilen değerlendirme ve analiz yöntemlerinin karşılaştırılması. Black box erişim temel davranış analizleri ve manuel saldırılarla sınırlıyken, gradient tabanlı saldırılar, mechanistic interpretability ve fine-tuning gibi yöntemler daha yüksek erişim seviyeleri gerektirmektedir. Outside-the-box erişim ise sistem hakkında yayınlanan ek bilgi kaynaklarının incelenmesine odaklanmaktadır. Kaynak:* Black-Box Access is Insufficient for Rigorous AI Audits *(2024).*
+
+Uygulanabilecek analiz yöntemleri, araştırmacının sisteme ne düzeyde erişebildiğine bağlı olarak değişmektedir. Black box erişim altında test setleri, manuel saldırılar ve davranış analizleri gerçekleştirilebilirken, gradient tabanlı saldırılar, latent space analizleri, mechanistic interpretability çalışmaları ve fine-tuning gibi yöntemler daha yüksek düzeyde erişim gerektirmektedir. Buna karşılık outside-the-box erişim, modelin iç işleyişinden ziyade sistem hakkında yayınlanan ek bilgi kaynaklarının incelenmesine olanak sağlamaktadır. Bu durum, yapay zeka sistemlerinin değerlendirilmesinde erişim seviyesinin doğrudan kullanılabilecek analiz yöntemlerini belirlediğini ve güvenlik değerlendirmelerinin yalnızca modele değil, sistem hakkında erişilebilen tüm bilgi kaynaklarına da dayanabileceğini göstermektedir.
