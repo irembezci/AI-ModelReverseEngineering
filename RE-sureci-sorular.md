@@ -1,6 +1,6 @@
 # AI Reverse Engineering (Tersine Mühendislik) Sürecinde Sorduğumuz Temel Sorular
 
-Bir yapay zeka sistemini reverse engineering yaklaşımıyla incelerken amacımız yalnızca modelin ne olduğunu belirlemek değildir. Aynı zamanda modelin nasıl çalıştığını, hangi verilerle eğitildiğini, hangi karar mekanizmalarını kullandığını ve hangi sınırlamalara sahip olduğunu da anlamaya çalışırız. Bu amaç doğrultusunda araştırmacılar sistematik olarak belirli sorular sorar. Bu sorular, gerçekleştirilecek analizlerin temelini oluşturur.
+Bir yapay zeka sistemini reverse engineering yaklaşımıyla incelerken amacımız yalnızca modelin ne olduğunu belirlemek değildir. Aynı zamanda modelin nasıl çalıştığını, hangi verilerle eğitildiğini, hangi karar mekanizmalarını kullandığını ve hangi sınırlamalara sahip olduğunu da anlamaya çalışırız. Bu amaç doğrultusunda sistematik olarak belirli sorular sorarız. Bu sorular, gerçekleştireceğimiz analizlerin temelini oluşturur.
 
 ## Mimariye Yönelik Sorular (Architecture Questions)
 
@@ -10,13 +10,13 @@ Bilinmeyen bir yapay zeka modeliyle karşılaştığımızda ilk olarak modelin 
 
 Transformer, RNN, CNN, karar ağacı (Decision Tree) veya doğrusal (Linear) bir model mi?
 
-Her model ailesi kendine özgü davranışsal özelliklere sahiptir. Modelin verdiği tepkiler analiz edilerek hangi mimariye ait olduğu hakkında çıkarımlarda bulunulabilir.
+Reverse engineering sürecindeki ilk hedeflerden biri, incelenen sistemin hangi model ailesine ait olduğunu belirlemektir. Her model ailesi kendine özgü davranışsal özelliklere sahiptir. Modelin yanıt sürelerini, ürettiği çıktıları, tokenizasyon davranışını ve diğer davranışsal imzaları (Behavioral Signatures) analiz ederek modelin hangi mimariyi kullandığına dair yüksek doğrulukta çıkarımlar yapmaya çalışırız.
 
 ### Soru 2: Modelin ölçeği nedir?
 
-Büyük transformer modelleri ile küçük modeller farklı davranışlar sergiler. Modelin ölçeğini anlamak, olası mimarileri daraltmaya yardımcı olur.
+Büyük transformer modelleri ile küçük modeller aynı mimariye sahip olsalar bile farklı davranışlar sergileyebilir. Bu nedenle yalnızca model ailesini belirlemek yeterli değildir; modelin yaklaşık ölçeğini de anlamaya çalışırız. Model büyüdükçe yanıt kalitesi, gecikme süresi ve kaynak kullanımı gibi özellikler de değişebilir. Bu bilgiler olası aday modelleri daraltmamıza yardımcı olur.
 
-Araştırmacılar bunun için aşağıdaki dolaylı göstergelerden (proxy measures) yararlanabilir:
+Bunun için aşağıdaki dolaylı göstergelerden (Proxy Measures) yararlanabiliriz:
 
 - Yanıt gecikmesi (Response Latency)
 - Bellek kullanımı (Memory Usage)
@@ -28,6 +28,8 @@ Model hangi tür girdileri kabul ediyor?
 
 Çıktının biçimi ve boyutu nedir?
 
+Modelin giriş ve çıkış yapısı, kullanılan mimari hakkında önemli ipuçları verir. Özellikle çıktı boyutu, modelin hangi problem için geliştirildiğini veya hangi kelime dağarcığını kullandığını anlamamıza yardımcı olabilir.
+
 Örneğin;
 
 - 1000 sınıflı bir çıktı, büyük olasılıkla ImageNet benzeri bir görüntü sınıflandırma modeline işaret eder.
@@ -35,7 +37,7 @@ Model hangi tür girdileri kabul ediyor?
 
 ### Soru 4: Model hangi tokenizasyon yöntemini kullanıyor?
 
-Dil modellerinde kullanılan tokenizasyon yöntemi model hakkında önemli ipuçları verir.
+Dil modellerinde kullanılan tokenizasyon yöntemi model hakkında önemli ipuçları verir. Farklı model aileleri farklı tokenizasyon stratejileri kullanabilir. Bu nedenle üretilen çıktıları dikkatle inceleyerek modelin hangi tokenizasyon yöntemini kullandığını anlamaya çalışırız.
 
 Örneğin model;
 
@@ -57,25 +59,25 @@ tokenizasyon yöntemlerinden birini kullanıyor olabilir.
 
 Model hangi alanlarda güçlü, hangilerinde zayıf?
 
-Örneğin ağırlıklı olarak web verileriyle eğitilmiş bir model, kaynak kodu veya biyomedikal veriler üzerinde eğitilmiş bir modele göre farklı güçlü ve zayıf yönlere sahip olacaktır.
+Modelin hangi veri kümeleri üzerinde eğitildiğini anlamaya çalışırız. Çünkü eğitim verisi, modelin güçlü ve zayıf olduğu alanları doğrudan etkiler. Örneğin ağırlıklı olarak web verileriyle eğitilmiş bir model ile kaynak kodu veya biyomedikal veriler üzerinde eğitilmiş bir model farklı davranışlar sergileyecektir.
 
 ### Soru 6: Modelin bilgi kesim tarihi (Knowledge Cutoff) nedir?
 
 Büyük dil modelleri belirli bir tarihe kadar olan bilgilerle eğitilir.
 
-Zamana duyarlı bilgiler kullanılarak yapılan testler sayesinde modelin eğitim verisinin yaklaşık hangi tarihte sona erdiği tahmin edilebilir.
+Modelin hangi tarihe kadar olan bilgilere sahip olduğunu belirlemek, eğitim verisinin zaman aralığını anlamamıza yardımcı olur. Bunun için güncel olaylar, yeni teknolojiler veya yakın tarihte gerçekleşmiş gelişmeler hakkında sorular yönelterek modelin bilgi sınırını tahmin etmeye çalışırız.
 
 ### Soru 7: Model hangi metinleri veya veri örneklerini ezberledi?
 
 Membership Inference ve Data Extraction teknikleri kullanılarak modelin eğitim sırasında ezberlediği belirli örnekler ortaya çıkarılabilir.
 
-Bu örnekler;
+Bu analizler sayesinde modelin;
 
 - Özel (Private) verileri,
 - Telif hakkıyla korunan içerikleri,
 - Eğitim verisindeki belirli kayıtları
 
-içerebilir.
+ezberleyip ezberlemediğini anlamaya çalışırız. Bu aynı zamanda gizlilik ve veri güvenliği açısından önemli bir değerlendirme alanıdır.
 
 ### Soru 8: Modelin eğitim dağılımı (Training Distribution) nasıldır?
 
@@ -88,20 +90,20 @@ Eğitim verisinde;
 
 daha fazla veya daha az temsil edilmektedir?
 
-Bu sorunun cevabı model davranışlarındaki önyargıları (Bias) anlamaya yardımcı olur.
+Modelin farklı konulardaki performansını karşılaştırarak eğitim verisinin nasıl bir dağılıma sahip olduğu hakkında çıkarımlar yapmaya çalışırız. Bu analiz aynı zamanda modelde bulunan önyargıları (Bias) anlamamıza da yardımcı olur.
 
 
 ## Karar Mekanizmasına Yönelik Sorular (Decision Logic Questions)
 
-Bu bölümde modelin kararlarını nasıl verdiği incelenir.
+Bu bölümde modelin kararlarını nasıl verdiğini anlamaya çalışırız.
 
 ### Soru 9: Model tahmin yaparken hangi özellikleri kullanıyor?
 
-Attribution yöntemleri (örneğin SHAP, Integrated Gradients ve Attention analizleri), girişteki hangi özelliklerin model kararını en fazla etkilediğini ortaya çıkarabilir.
+Bir model her kararını girişte bulunan tüm bilgilerden eşit şekilde etkilenerek vermez. Bazı özellikler diğerlerinden daha fazla önem taşır. SHAP, Integrated Gradients ve Attention analizleri gibi attribution yöntemleri sayesinde hangi giriş özelliklerinin model kararını en fazla etkilediğini inceleyebiliriz.
 
 ### Soru 10: Model hangi iç temsilleri (Internal Representations) öğrendi?
 
-Probing Classifier yöntemleri kullanılarak ara katmanlarda hangi bilgilerin temsil edildiği analiz edilebilir.
+Derin öğrenme modelleri bilgiyi ara katmanlarda farklı biçimlerde temsil eder. Probing Classifier yöntemleri kullanarak bu katmanlarda hangi bilgilerin öğrenildiğini ve nasıl temsil edildiğini anlamaya çalışırız.
 
 ### Soru 11: Karar sınırları (Decision Boundaries) nerede bulunuyor?
 
@@ -110,7 +112,7 @@ Probing Classifier yöntemleri kullanılarak ara katmanlarda hangi bilgilerin te
 - Sınıflar arasındaki karar sınırları nerede?
 - Belirli bir tahmin karar sınırına ne kadar yakın?
 
-gibi sorular araştırılabilir.
+gibi soruların cevaplarını ararız. Karar sınırlarının belirlenmesi, modelin hangi durumlarda hata yapabileceğini anlamamıza yardımcı olur.
 
 ### Soru 12: Modelin sistematik önyargıları (Systematic Biases) nelerdir?
 
@@ -120,7 +122,7 @@ Model;
 - Kültürel önyargılar içeriyor mu?
 - Belirli anahtar kelimeler belirli davranışları tetikliyor mu?
 
-Bu sorular modelde bulunan sistematik önyargıları ortaya çıkarmaya yardımcı olur.
+Bu sorular sayesinde modelde bulunan sistematik önyargıları ortaya çıkarmaya ve hangi durumlarda beklenmeyen davranışlar sergileyebileceğini anlamaya çalışırız.
 
 
 ## Yetenek ve Sınırlamalara Yönelik Sorular (Capability and Limitation Questions)
@@ -129,16 +131,14 @@ Son grup sorular modelin neleri yapabildiğini ve hangi durumlarda başarısız 
 
 ### Soru 13: Modelin belgelenmemiş hangi yetenekleri bulunuyor?
 
-Modeller, açıkça eğitilmedikleri halde zamanla ortaya çıkan yeni yetenekler (Emergent Capabilities) sergileyebilir.
-
-Sistematik testler sayesinde modelin tüm yetenek spektrumu ortaya çıkarılabilir.
+Birçok model, açıkça eğitilmediği halde zaman içerisinde beklenmeyen yeni yetenekler (Emergent Capabilities) geliştirebilir. Sistematik testler uygulayarak modelin belgelenmemiş yeteneklerini ve gerçek kapasitesini ortaya çıkarmaya çalışırız.
 
 ### Soru 14: Model hangi durumlarda başarısız oluyor ve neden?
 
-Adversarial örnekler, dağılım dışı girdiler (Out-of-Distribution Inputs) ve uç durumlar (Edge Cases), modelin başarısız olduğu senaryoları ortaya çıkarmaya yardımcı olur.
+Hiçbir model her durumda doğru sonuç üretmez. Adversarial örnekler, dağılım dışı girdiler (Out-of-Distribution Inputs) ve uç durumlar (Edge Cases) kullanarak modelin başarısız olduğu senaryoları belirlemeye çalışırız. Bu analizler güvenlik değerlendirmelerinin önemli bir parçasını oluşturur.
 
 ### Soru 15: Modelin kalibrasyonu (Calibration) nasıldır?
 
 Modelin ifade ettiği güven seviyesi gerçekten doğruluk oranıyla uyumlu mudur?
 
-Eğer modelin güven düzeyi ile gerçek performansı arasında önemli farklılıklar bulunuyorsa, bu durum eğitim veya eğitim sonrası süreçlerde (Post-Training) çeşitli problemlere işaret edebilir.
+Bazı modeller yanlış cevaplar verirken bile oldukça yüksek güven ifade edebilir. Bu nedenle modelin güven düzeyi ile gerçek doğruluk oranının ne kadar uyumlu olduğunu analiz ederiz. Kalibrasyonun zayıf olması, eğitim veya eğitim sonrası (Post-Training) süreçlerde çeşitli problemlere işaret edebilir.
