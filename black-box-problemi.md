@@ -1,0 +1,47 @@
+# Black Box Problemi
+
+> **devam etmeden önce küçük bir not:** Bu bölümde black box, gray box ve white box terimlerini kullanacağım. Bu kavramlar sırasıyla kara kutu, gri kutu ve beyaz kutu anlamına geliyor ancak AI Security literatüründe genellikle İngilizce isimleriyle kullanıldıkları için ben de aynı terminolojiyi takip edeceğim.
+
+Yapay zeka alanında bir sistemin **black box** olarak tanımlanması, sistemin iç işleyişinin kullanıcı veya araştırmacı tarafından doğrudan gözlemlenememesi anlamına gelir. Bu tür sistemlerde genellikle yalnızca sisteme verilen girdiler ve sistemin ürettiği çıktılar görülebilir. Ancak bu çıktılara nasıl ulaşıldığı, hangi ara hesaplamaların gerçekleştirildiği veya kararın hangi mekanizmalar sonucunda üretildiği doğrudan anlaşılamaz.
+
+Bir yapay zeka sistemi,
+
+- Modelin mimarisi veya parametreleri bilinmiyorsa,
+- Yalnızca girdiler ve çıktılar gözlemlenebiliyorsa,
+- Ara hesaplama süreçlerine erişilemiyorsa,
+- Sistem stokastik davranış sergileyerek aynı girdiye farklı çıktılar üretebiliyorsa
+
+**black box** olarak değerlendirilebilir.
+
+"Black box" kavramı kökenini kontrol teorisinden almaktadır. Kontrol teorisinde black box, iç mekanizmaları bilinmeyen ancak girdi ve çıktı ilişkisi gözlemlenebilen sistemleri ifade etmek için kullanılır.
+
+Bu durumu günlük hayattan basit bir örnekle açıklayabiliriz. Kapalı bir kutunun içerisine bir nesne yerleştirildiğini düşünelim. Kutunun içine bakamıyoruz ve içinde ne olduğunu doğrudan göremiyoruz. Ancak kutuyu salladığımızda çıkan sesi duyabilir, ağırlığını hissedebilir veya vereceği diğer tepkileri gözlemleyebiliriz. Kutunun içinde tam olarak ne olduğunu bilmesek de bu gözlemlerden yola çıkarak içerisinde ne bulunabileceğine dair bazı çıkarımlarda bulunabiliriz.
+
+Black box yapay zeka sistemleri de benzer şekilde çalışır. Modelin iç işleyişini doğrudan göremesek bile farklı girdiler vererek üretilen çıktıları analiz ederek sistemin davranışlarını anlamaya çalışabiliriz. Özellikle ticari büyük dil modelleri incelenirken çoğu zaman araştırmacının erişebildiği tek şey modelin girdileri ve çıktılarıdır. Bu nedenle model davranışlarının anlaşılması ve güvenlik analizlerinin gerçekleştirilmesi büyük ölçüde gözlemlenen sonuçlara dayanır.
+
+
+Black box sistemlerin aksine **white box** sistemlerde model tamamen şeffaftır. Sistemin tüm bileşenlerine erişebilir ve modelin nasıl çalıştığını ayrıntılı şekilde inceleyebiliriz. Bu sayede yalnızca modelin ürettiği çıktılar değil, bu çıktılara nasıl ulaşıldığı da analiz edilebilir.
+
+White box sistemlerde model mimarisine, ağırlık ve bias değerlerine erişim sağlanabilir, gradient hesaplamaları gerçekleştirilebilir, ara katman aktivasyonları gözlemlenebilir ve modelin eğitim sürecinde kullanılan yöntemler analiz edilebilir.
+
+Bunu şeffaf bir makineyi incelemeye benzetebiliriz. Eğer bir makinenin dış kapağı tamamen kaldırılmışsa, yalnızca giriş ve çıkışlarını değil içerideki dişlileri, motorları ve parçaların birbirleriyle nasıl etkileşime girdiğini de gözlemleyebiliriz. Böylece sistemin neden belirli bir davranış sergilediğini anlamak çok daha kolay hale gelir.
+
+Örneğin açık kaynak olarak yayınlanan ve model ağırlıkları paylaşılmış bir büyük dil modeli white box yaklaşımıyla analiz edilebilir. Bu durumda yalnızca modelin verdiği cevaplar değil, modelin parametreleri, ara katmanları ve karar verme süreci de incelenebilir.
+
+Mesela OpenAI tarafından yayınlanan GPT-2 modeli white box bir model olarak değerlendirilebilir. Modelin mimarisine, parametrelerine ve ara katmanlarına erişilebildiği için GPT-2 üzerinde white box analizler gerçekleştirilebilir.
+
+Transformer Explainer gibi araçlarda GPT-2 Small kullanılmasının nedeni de budur. Bu araçlar sayesinde modelin iç katmanları, attention head'leri ve tokenler arasındaki etkileşimler adım adım incelenebilmektedir. Böylece yalnızca modelin verdiği cevap değil, bu cevaba ulaşırken hangi hesaplamaların gerçekleştirildiği de gözlemlenebilmektedir.
+
+Eğer GPT-4 veya Claude gibi kapalı modeller üzerinde aynı analizi yapmak isteseydik bu mümkün olmazdı. Çünkü bu sistemlerin iç mimarilerine, parametrelerine ve ara hesaplamalarına erişim bulunmamaktadır. Bu nedenle yalnızca girdiler ve çıktılar gözlemlenebilmektedir.
+
+
+Bunun yanında, tamamen black box veya tamamen white box olmayan sistemler de bulunmaktadır. Bu tür sistemler **gray box** olarak adlandırılır. Gray box senaryolarında sistem hakkında belirli bilgilere sahip olabiliriz ancak tüm detaylara erişemeyiz.
+
+Örneğin modelin hangi mimari ailesine ait olduğu bilinebilir ancak tam yapılandırması bilinmeyebilir, çıktı olasılıklarına erişilebilir ancak iç durumlara erişilemeyebilir veya eğitim verisi hakkında bilgi sahibi olunabilir ancak modelin nasıl eğitildiği tam olarak bilinmeyebilir.
+
+Bunu yarı saydam bir kutuya benzetebiliriz. Kutunun içerisine tamamen bakamasak da bazı parçalarını görebiliriz. Ancak sistemin tamamını gözlemleyemediğimiz için içeride neler olup bittiğine dair yalnızca kısmi çıkarımlar yapabiliriz.
+
+Günümüzde birçok ticari yapay zeka sistemi gray box özellikleri göstermektedir. Örneğin bir şirket modelin transformer tabanlı olduğunu açıklayabilir veya teknik raporlar yayınlayabilir. Ancak model ağırlıkları, ara katmanları ve eğitim sürecine ilişkin tüm detaylar paylaşılmayabilir. Bu durumda sistem ne tamamen black box ne de tamamen white box olarak değerlendirilebilir.
+
+AI Security çalışmalarında bu ayrım oldukça önemlidir. Çünkü gerçekleştirilecek saldırılar, savunma yöntemleri ve güvenlik analizleri modele ne kadar erişilebildiğine bağlı olarak değişiklik göstermektedir. Bu nedenle yapay zeka güvenliği literatüründe saldırı ve değerlendirme senaryoları genellikle black box, gray box ve white box varsayımları altında ele alınmaktadır.
+```
